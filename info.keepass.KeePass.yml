@@ -4,6 +4,7 @@ runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.mono6
+  - org.freedesktop.Sdk.Extension.dotnet8
 
 command: keepass
 
@@ -16,7 +17,7 @@ finish-args:
   - --device=all
 
 modules:
-  - shared/gtk2/gtk2.json
+  - shared-module/gtk2/gtk2.json
   - name: mono
     buildsystem: simple
     build-commands:
