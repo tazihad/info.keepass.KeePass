@@ -1,0 +1,64 @@
+app-id: info.keepass.KeePass
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.mono6
+
+command: keepass
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --share=network
+  - --socket=pulseaudio
+  - --filesystem=host
+  - --device=all
+
+modules:
+  - shared/gtk2/gtk2.json
+  - name: mono
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/mono6/install.sh
+
+  - name: extralibs
+    buildsystem: simple
+    build-commands:
+      - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Drawing /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Drawing/*/*.pdb
+      - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Windows.Forms /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Windows.Forms/*/*.pdb
+  - name: libgdiplus
+    sources:
+      - type: archive
+        url: https://download.mono-project.com/sources/libgdiplus/libgdiplus-6.1.tar.gz
+        sha256: 97d5a83d6d6d8f96c27fb7626f4ae11d3b38bc88a1726b4466aeb91451f3255b
+
+
+  - name: keepass
+    buildsystem: simple
+    sources:
+      - type: file
+        sha256: a613ca206fbf5875ad8fe5e440a76418ce01135d3304dc56a0df12255d83fe07
+        url: https://master.dl.sourceforge.net/project/keepass/KeePass%202.x/2.58/KeePass-2.58.zip
+        dest-filename: keepass.zip
+        dest: keepass
+    build-commands:
+      - unzip keepass/keepass.zip -d /app/keepass
+      - echo '#!/bin/sh' > /app/bin/keepass
+      - echo 'exec mono /app/keepass/KeePass.exe "$@"' >> /app/bin/keepass
+      - chmod +x /app/bin/keepass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
