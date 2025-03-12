@@ -17,23 +17,10 @@ jobs:
         cache: [use-cache, no-cache]
         restore: [cache-restored, no-cache-restored]
         exclude:
-          - arch: aarch64
-            cache: no-cache
-          - arch: aarch64
-            restore: no-cache-restored
           - cache: no-cache
             restore: cache-restored
     steps:
       - uses: actions/checkout@v4
-      - name: Install QEMU deps
-        if: ${{ matrix.arch != 'x86_64' }}
-        run: |
-          dnf -y install docker
-      - name: Set up QEMU
-        if: ${{ matrix.arch != 'x86_64' }}
-        uses: docker/setup-qemu-action@v2
-        with:
-          platforms: arm64
       - name: Build Flatpak
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
