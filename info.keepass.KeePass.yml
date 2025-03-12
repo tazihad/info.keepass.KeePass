@@ -12,12 +12,11 @@ finish-args:
   - --share=ipc
   - --socket=x11
   - --share=network
-  - --socket=pulseaudio
-  - --filesystem=host
+  - --filesystem=home
   - --device=all
 
 modules:
-  - shared-module/gtk2/gtk2.json
+  - shared-modules/gtk2/gtk2.json
   - name: mono
     buildsystem: simple
     build-commands:
