@@ -27,6 +27,10 @@ modules:
     build-commands:
       - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Drawing /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Drawing/*/*.pdb
       - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Windows.Forms /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Windows.Forms/*/*.pdb
+      - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Web /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Web/*/*.pdb
+      - cp -ar /usr/lib/sdk/mono6/lib/mono/gac/System.Web.Extensions /app/lib/mono/gac/ && rm -f /app/lib/mono/gac/System.Web.Extensions/*/*.pdb
+      - cp -n /usr/lib/sdk/mono6/lib/mono/4.8-api/*.dll /app/lib/mono/4.5/
+
 
   - name: libgdiplus
     sources:
