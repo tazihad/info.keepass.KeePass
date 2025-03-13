@@ -9,8 +9,8 @@ command: keepass
 
 finish-args:
   - --socket=x11
+  - --ipc=host
   - --filesystem=home
-  - --env=MONO_PATH=/app/lib/mono/4.5/
   - --env=LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH
 
 modules:
