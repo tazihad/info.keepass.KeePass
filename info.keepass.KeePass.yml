@@ -42,15 +42,22 @@ modules:
         dest-filename: keepass.zip
         dest: keepass
     build-commands:
-      - unzip keepass/keepass.zip -d /app/keepass
-      - rm -f /app/keepass/KeePass.config.xml
-      - |
-        # Only create symlink for the config file once during build time
-        echo "Creating symlink for KeePass.config.xml"
-        ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
-      - install -Dm755 /dev/null /app/bin/keepass
-      - |
-        echo '#!/bin/sh' > /app/bin/keepass
-        echo 'export MONO_PATH=/app/lib/mono/4.5/' >> /app/bin/keepass
-        echo 'export LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH' >> /app/bin/keepass
-        echo 'exec mono /app/keepass/KeePass.exe "$@"' >> /app/bin/keepass
+        - unzip keepass/keepass.zip -d /app/keepass
+        - rm -f /app/keepass/KeePass.config.xml
+        - |
+            # create symlink: config
+            echo "Creating symlink for KeePass.config.xml"
+            ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
+        - rm -rf /app/keepass/Plugins  # Remove the existing Plugins folder
+        - |
+            # Create symlink for the Plugins folder
+            echo "Creating symlink for Plugins folder"
+            mkdir -p $HOME/.var/app/info.keepass.KeePass/config/KeePass/Plugins
+            ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/Plugins /app/keepass/Plugins
+        - install -Dm755 /dev/null /app/bin/keepass
+        - |
+            echo '#!/bin/sh' > /app/bin/keepass
+            echo 'export MONO_PATH=/app/lib/mono/4.5/' >> /app/bin/keepass
+            echo 'export LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH' >> /app/bin/keepass
+            echo 'exec mono /app/keepass/KeePass.exe "$@"' >> /app/bin/keepass
+
