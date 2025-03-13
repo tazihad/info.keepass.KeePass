@@ -45,15 +45,15 @@ modules:
         - unzip keepass/keepass.zip -d /app/keepass
         - rm -f /app/keepass/KeePass.config.xml
         - |
-            # create symlink: config
-            echo "Creating symlink for KeePass.config.xml"
-            ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
-        - rm -rf /app/keepass/Plugins  # Remove the existing Plugins folder
+            ln -s $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
+        - rm -rf /app/keepass/Plugins
         - |
-            # Create symlink for the Plugins folder
-            echo "Creating symlink for Plugins folder"
-            mkdir -p $HOME/.var/app/info.keepass.KeePass/config/KeePass/Plugins
-            ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/Plugins /app/keepass/Plugins
+            install -Dm755 -d ${XDG_DATA_HOME}/Plugins
+            ln -s $HOME/.var/app/info.keepass.KeePass/data/Plugins /app/keepass
+
+
+
+
         - install -Dm755 /dev/null /app/bin/keepass
         - |
             echo '#!/bin/sh' > /app/bin/keepass
