@@ -43,6 +43,11 @@ modules:
         dest: keepass
     build-commands:
       - unzip keepass/keepass.zip -d /app/keepass
+      - rm -f /app/keepass/KeePass.config.xml
+      - |
+        # Only create symlink for the config file once during build time
+        echo "Creating symlink for KeePass.config.xml"
+        ln -sf $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
       - install -Dm755 /dev/null /app/bin/keepass
       - |
         echo '#!/bin/sh' > /app/bin/keepass
