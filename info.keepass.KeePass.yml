@@ -41,23 +41,60 @@ modules:
         url: https://master.dl.sourceforge.net/project/keepass/KeePass%202.x/2.58/KeePass-2.58.zip
         dest-filename: keepass.zip
         dest: keepass
+      - type: script
+        dest-filename: create-config-wrapper
+        commands:
+         - |
+            export MONO_PATH=/app/lib/mono/4.5/
+            export LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH
+
+            # Ensure KeePass.config.xml is handled correctly
+            if [ ! -e "$XDG_CONFIG_HOME/KeePass/KeePass.config.xml" ]; then
+                echo "$XDG_CONFIG_HOME/KeePass/KeePass.config.xml does not exist, generating default config."
+
+                # Create the KeePass directory if it doesn't exist
+                mkdir -p "$XDG_CONFIG_HOME/KeePass"
+
+                # Generate a default KeePass.config.xml
+                cat <<EOF > "$XDG_CONFIG_HOME/KeePass/KeePass.config.xml"
+            <?xml version="1.0" encoding="utf-8"?>
+            <Configuration>
+            <KeePassAppData>
+                <Language>en-US</Language>
+                <LastUsedVersion>2.58</LastUsedVersion>
+            </KeePassAppData>
+            <KeyFileOptions>
+                <UseKeyFile>false</UseKeyFile>
+                <KeyFilePath />
+            </KeyFileOptions>
+            <DatabaseSettings>
+                <LastOpened />
+                <LastSaved />
+            </DatabaseSettings>
+            </Configuration>
+            EOF
+            else
+                echo "$XDG_CONFIG_HOME/KeePass/KeePass.config.xml already exists, skipping generation."
+            fi
+
+            # Ensure Plugins directory exists and symlink it
+            echo "Checking and creating Plugins directory if missing..."
+            install -Dm755 -d "${XDG_DATA_HOME}/Plugins"
+            [ ! -e /app/keepass/Plugins ] && ln -s "${XDG_DATA_HOME}/Plugins" /app/keepass/Plugins && echo "Symlink created for Plugins" || echo "Plugins already exists, skipping symlink creation"
+
+            exec mono /app/keepass/KeePass.exe "$@"
+
     build-commands:
         - unzip keepass/keepass.zip -d /app/keepass
         - rm -f /app/keepass/KeePass.config.xml
-        - |
-            ln -s $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
-        - rm -rf /app/keepass/Plugins
-        - |
-            install -Dm755 -d ${XDG_DATA_HOME}/Plugins
-            ln -s $HOME/.var/app/info.keepass.KeePass/data/Plugins /app/keepass
+        - rmdir /app/keepass/Plugins
+        - ln -s $HOME/.var/app/info.keepass.KeePass/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
+        - mkdir -p "${XDG_DATA_HOME}/Plugins"
+        - ln -s "$HOME/.var/app/info.keepass.KeePass/data/Plugins" /app/keepass
+        - install -Dm 755 create-config-wrapper /app/bin/keepass
 
 
 
 
-        - install -Dm755 /dev/null /app/bin/keepass
-        - |
-            echo '#!/bin/sh' > /app/bin/keepass
-            echo 'export MONO_PATH=/app/lib/mono/4.5/' >> /app/bin/keepass
-            echo 'export LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH' >> /app/bin/keepass
-            echo 'exec mono /app/keepass/KeePass.exe "$@"' >> /app/bin/keepass
+
 
