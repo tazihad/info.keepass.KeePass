@@ -9,7 +9,7 @@ command: keepass
 
 finish-args:
   - --socket=x11
-  - --ipc=host
+  - --share=ipc
   - --filesystem=home
   - --env=LD_LIBRARY_PATH=/app/lib/mono/4.5:$LD_LIBRARY_PATH
 
