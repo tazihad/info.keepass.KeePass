@@ -1,4 +1,4 @@
-app-id: info.keepass.Keepass2
+app-id: info.keepass.KeePass2
 runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
@@ -89,17 +89,44 @@ modules:
 
             exec mono /app/keepass/KeePass.exe "$@"
 
+      - type: file
+        path: info.keepass.KeePass2.metainfo.xml
+      - type: file
+        path: info.keepass.KeePass2.desktop
+      - type: file
+        path: info.keepass.KeePass2.png
+
     build-commands:
         - unzip keepass/keepass.zip -d /app/keepass
         - rm -f /app/keepass/KeePass.config.xml
         - rmdir /app/keepass/Plugins
-        - ln -s $HOME/.var/app/info.keepass.Keepass2/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
+        - ln -s $HOME/.var/app/info.keepass.KeePass2/config/KeePass/KeePass.config.xml /app/keepass/KeePass.config.xml
         - mkdir -p "${XDG_DATA_HOME}/Plugins"
-        - ln -s "$HOME/.var/app/info.keepass.Keepass2/data/Plugins" /app/keepass
+        - ln -s "$HOME/.var/app/info.keepass.KeePass2/data/Plugins" /app/keepass
         - install -Dm 755 create-config-wrapper /app/bin/keepass
-        - install -Dm644 info.keepass.KeePass2.metainfo.metainfo.xml /app/share/metainfo/info.keepass.KeePass2.metainfo.xml
-        - install -Dm644 info.keepass.KeePass2.desktop /app/share/applications/info.keepass.KeePass2.desktop
-        - install -Dm644 info.keepass.KeePass2.png /app/share/icons/hicolor/256x256/apps/info.keepass.KeePass2.png
+        - install -Dm644 info.keepass.KeePass2.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+        - install -Dm644 info.keepass.KeePass2.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+        - install -Dm644 info.keepass.KeePass2.png ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
