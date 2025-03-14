@@ -22,6 +22,5 @@
     <releases>
         <release version="2.58" date="2025-03-04"/>
     </releases>
-    <content_rating type="oars-1.1" />
     <update_contact>dominik.reichl@t-online.de</update_contact>
 </component>
