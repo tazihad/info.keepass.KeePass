@@ -97,6 +97,9 @@ modules:
         - mkdir -p "${XDG_DATA_HOME}/Plugins"
         - ln -s "$HOME/.var/app/info.keepass.Keepass2/data/Plugins" /app/keepass
         - install -Dm 755 create-config-wrapper /app/bin/keepass
+        - install -Dm644 info.keepass.KeePass2.metainfo.metainfo.xml /app/share/metainfo/info.keepass.KeePass2.metainfo.xml
+        - install -Dm644 info.keepass.KeePass2.desktop /app/share/applications/info.keepass.KeePass2.desktop
+        - install -Dm644 info.keepass.KeePass2.png /app/share/icons/hicolor/256x256/apps/info.keepass.KeePass2.png
 
 
 
