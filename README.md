@@ -10,3 +10,5 @@ flatpak run info.keepass.KeePass2
 
 flatpak build-bundle repo keepass2.flatpak info.keepass.KeePass2 --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
 ```
+### TODO
+Support plugins Many plugins doesn't work. 
